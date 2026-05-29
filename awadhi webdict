@@ -1,0 +1,134 @@
+================================================================
+   Awadhi Shabdakosh -- Awadhi Online Dictionary
+   JSP Web Application  |  ROOT Project Structure
+   Course  : SK-512 Computational Linguistics Toolkit
+   Center  : Centre for Linguistics, J.N.U.
+   Teacher : Prof. Girish Nath Jha
+================================================================
+
+PROJECT STRUCTURE
+-----------------
+awadhi-dictionary-web/
+|-- index.jsp                          Main dictionary web page
+|-- css/
+|   +-- style.css                      Stylesheet (fonts, colours, layout)
+|-- WEB-INF/
+|   |-- web.xml                        Tomcat deployment descriptor
+|   |-- datafiles/
+|   |   |-- awadhi-config.txt          Dictionary metadata (config)
+|   |   +-- awadhi-lexicon.txt         2414 Awadhi words (tab-separated)
+|   +-- classes/
+|       +-- students/
+|           |-- LexiconReader.java     Reads tab-separated data files
+|           |-- LexiconReader.class    Compiled class
+|           |-- LexiconSearch.java     Search logic (returns HTML)
+|           +-- LexiconSearch.class    Compiled class
+
+
+REQUIREMENTS
+------------
+1. Java JDK 11 or higher
+   Download : https://adoptium.net
+   Choose   : JDK 21, Windows x64
+
+2. Apache Tomcat 10
+   Download : https://tomcat.apache.org/download-10.cgi
+   Choose   : Binary Distributions > Core > zip
+
+
+HOW TO DEPLOY (Step by Step)
+-----------------------------
+
+STEP 1 -- Install Java JDK
+   - Download JDK 21 from https://adoptium.net
+   - Run the installer
+   - Tick "Add to PATH" during installation
+   - Verify: open CMD and type:  java -version
+
+STEP 2 -- Install Apache Tomcat
+   - Download Tomcat 10 zip from https://tomcat.apache.org/download-10.cgi
+   - Extract the zip to C:\tomcat10
+   - Your folder should look like:
+       C:\tomcat10\bin\
+       C:\tomcat10\webapps\
+       C:\tomcat10\conf\
+
+STEP 3 -- Deploy this project
+   Option A -- Deploy as WAR (easiest):
+     Copy  awadhi-dictionary.war  into  C:\tomcat10\webapps\
+     Tomcat will auto-unpack it when started.
+
+   Option B -- Deploy as folder:
+     Copy the entire  awadhi-dictionary-web  folder into  C:\tomcat10\webapps\
+     Rename it to  awadhi-dictionary
+
+STEP 4 -- Start Tomcat
+   Open CMD and run:
+     cd C:\tomcat10\bin
+     startup.bat
+
+   Wait about 10 seconds for Tomcat to start.
+
+STEP 5 -- Open in browser
+   Go to:  http://localhost:8080/awadhi-dictionary/
+
+   Your Awadhi Dictionary website is now live!
+
+
+HOW TO RECOMPILE JAVA FILES (if you make changes)
+--------------------------------------------------
+Open CMD in the project root folder and run:
+
+   javac -encoding UTF-8 -cp WEB-INF\classes WEB-INF\classes\students\LexiconReader.java
+   javac -encoding UTF-8 -cp WEB-INF\classes WEB-INF\classes\students\LexiconSearch.java
+
+Then restart Tomcat:
+   cd C:\tomcat10\bin
+   shutdown.bat
+   startup.bat
+
+
+FEATURES
+--------
+1. Search by Awadhi word     -- Devanagari input, starts-with + contains match
+2. Search by Hindi meaning   -- Whole-word match in Hindi column
+3. Search by English meaning -- Whole-word match (e.g. "water" finds water, not "waterfall")
+4. Search All                -- Searches all three columns at once
+5. Browse by first letter    -- 40 Devanagari alphabet buttons
+6. Quick-word links          -- Common words on welcome page
+7. Result highlighting       -- Matched text highlighted in saffron
+8. Stats cards               -- Total words, with/without English
+9. Responsive design         -- Works on mobile and desktop
+
+
+DATA FILES
+----------
+awadhi-config.txt   Tab-separated metadata file
+                    Keys: LEXICON_NAME, STUDENT_NAME, CENTER_NAME, etc.
+
+awadhi-lexicon.txt  Tab-separated dictionary data
+                    Format: Awadhi Word [TAB] Hindi Meaning [TAB] English Meaning
+                    Entries: 2414 words
+
+
+TROUBLESHOOTING
+---------------
+Problem : Page shows garbled text (????? or boxes)
+Fix     : Make sure Tomcat is using UTF-8. Add to C:\tomcat10\conf\server.xml
+          inside the <Connector port="8080"> tag:
+          URIEncoding="UTF-8"
+
+Problem : 404 Not Found
+Fix     : Check the URL is exactly http://localhost:8080/awadhi-dictionary/
+          Make sure the folder/war name is awadhi-dictionary (no spaces)
+
+Problem : Class not found error
+Fix     : Recompile the Java files (see HOW TO RECOMPILE section above)
+
+Problem : Port 8080 already in use
+Fix     : Change port in C:\tomcat10\conf\server.xml
+          Find: <Connector port="8080"
+          Change to: <Connector port="8081"
+          Then access at: http://localhost:8081/awadhi-dictionary/
+
+================================================================
